@@ -6,24 +6,32 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.SubsystemConstants;
 
 
 public class ArmSubsystem extends SubsystemBase {
 
+    private static final PneumaticsModuleType PneumaticsModuleType = null;
     private CANSparkMax left_motor;
     private CANSparkMax right_motor;
+    private CANSparkMax transitional_motor;
     private Solenoid Arm_Solenoid;
+    private Solenoid Arm_Solenoid_2;
     private boolean brake;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
     brake=false;
     left_motor=new CANSparkMax(SubsystemConstants.ARM_MOTOR_1, MotorType.kBrushless );
-    right_motor=new CANSparkMax(SubsystemConstants.ARM_MOTOR_1, MotorType.kBrushless );
+    right_motor=new CANSparkMax(SubsystemConstants.ARM_MOTOR_2, MotorType.kBrushless );
+    transitional_motor=new CANSparkMax(SubsystemConstants.ARM_MOTOR_1, MotorType.kBrushless);
+    Arm_Solenoid=new Solenoid(PneumaticsModuleType, Constants.SubsystemConstants.ARM_SOLENOID_1);
+    Arm_Solenoid=new Solenoid(PneumaticsModuleType, Constants.SubsystemConstants.ARM_SOLENOID_2);
   }
 
   /**
@@ -65,17 +73,30 @@ public class ArmSubsystem extends SubsystemBase {
         right_motor.set(SubsystemConstants.ARM_MOTOR_SPEEDS);
     }
     else if(mode.equalsIgnoreCase("forward")){
+
         left_motor.set(SubsystemConstants.ARM_MOTOR_SPEEDS);
         right_motor.set(-SubsystemConstants.ARM_MOTOR_SPEEDS);
     }
     else if(mode.equalsIgnoreCase("brake")){
         armbrake();
         Arm_Solenoid.set(brake);
+        Arm_Solenoid_2.set(brake);
 
     }
+    
+    
+
 
   }
   public void armbrake(){
     brake=!brake;
   }
+  public void transitional(String mode){
+    if(mode.equalsIgnoreCase("forward")){
+    transitional_motor.set(SubsystemConstants.ARM_MOTOR_SPEEDS);
+    }
+    else if(mode.equalsIgnoreCase("back")){
+      transitional_motor.set(-SubsystemConstants.ARM_MOTOR_SPEEDS);
+  }
+}
 }

@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
-    private AHRS Gyro;
+    private static AHRS Gyro;
     private CANSparkMax left_motor;
     private CANSparkMax left_motor_2;
     private CANSparkMax left_motor_3;
@@ -42,9 +42,10 @@ public class DriveSubsystem extends SubsystemBase {
    
 
 
-  /** Creates a new ExampleSubsystem. */
+  /** Declaring the necessary objects */
   public DriveSubsystem() {
     Gyro= new AHRS(I2C.Port.kMXP);
+
     left_motor=new CANSparkMax(Constants.DriveConstants.DRIVE_MOTOR_LEFT_1, MotorType.kBrushless);
     left_motor_2=new CANSparkMax(Constants.DriveConstants.DRIVE_MOTOR_LEFT_2, MotorType.kBrushless);
     left_motor_3=new CANSparkMax(Constants.DriveConstants.DRIVE_MOTOR_LEFT_3, MotorType.kBrushless);
@@ -52,56 +53,38 @@ public class DriveSubsystem extends SubsystemBase {
     right_motor=new CANSparkMax(Constants.DriveConstants.DRIVE_MOTOR_RIGHT_1, MotorType.kBrushless);
     right_motor_2=new CANSparkMax(Constants.DriveConstants.DRIVE_MOTOR_RIGHT_2, MotorType.kBrushless);
     right_motor_3=new CANSparkMax(Constants.DriveConstants.DRIVE_MOTOR_RIGHT_3, MotorType.kBrushless);
-
+//*Innitializing the motors with the constants and brushless motor type */
     left_motors=new MotorControllerGroup(left_motor, left_motor_2, left_motor_3);
     right_motors=new MotorControllerGroup(right_motor, right_motor_2, right_motor_3);
-
+//* Putting the motors in their respective motor control groups */
     our_drive=new DifferentialDrive(left_motors, right_motors);
-
+//* Differentiating the control groups */
     gearShifter = new Solenoid(0, PneumaticsModuleType.CTREPCM, Constants.DriveConstants.GEAR_SHIFTER);
-
+//*Innitializing the solenoid and setting it to a pneumatic module type and using the gear shift constants */
     left_encoders=new RelativeEncoder[2];
     right_encoders=new RelativeEncoder[2];
+    /*Innitializing the encoders */
     left_encoders[0]=left_motor.getEncoder();
     left_encoders[1]=left_motor_2.getEncoder();
     left_encoders[2]=left_motor_3.getEncoder();
     right_encoders[0]=right_motor.getEncoder();
     right_encoders[1]=right_motor_2.getEncoder();
     right_encoders[2]=right_motor_3.getEncoder();
+    /* Setting the encoder for each motor */
     left_encoders[0].setPositionConversionFactor(100/21);
     left_encoders[1].setPositionConversionFactor(100/21);
     left_encoders[2].setPositionConversionFactor(100/21);
     right_encoders[0].setPositionConversionFactor(100/21);
     right_encoders[1].setPositionConversionFactor(100/21);
     right_encoders[2].setPositionConversionFactor(100/21);
-
+    /* Setting the position conversion factor of every encoder to 100/21 */
     right_motor.setInverted(true);
     right_motor_2.setInverted(true);
     right_motor_3.setInverted(true);
-
-    
-
-
-        
+        /*Inverting the right motors */
     };
 
     
-
-
-  
-
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
   public boolean exampleCondition() {
     // Query some boolean state, such as a digital sensor.
     return false;
@@ -117,8 +100,10 @@ public class DriveSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void drive(double left, double right){
+  public static void drive(double left, double right){
     our_drive.tankDrive(left, right);
+    /*Allows the robot to drive */
+
   }
 
   public void resetEncoders(){
@@ -126,11 +111,13 @@ public class DriveSubsystem extends SubsystemBase {
         left_encoders[x].setPosition(0);
         right_encoders[x].setPosition(0);
     };
+    /*Loop that resets all the encoders */
   }
   public void Getaxis(){
     System.out.println("X axis:" + Gyro.getRoll());
     System.out.println("Y axis:" + Gyro.getPitch());
     System.out.println("Z axis:" + Gyro.getYaw());
+    /*This makes the gyro get the x,y, and z axis */
     }
 
     public void shift(String gear) {
@@ -139,6 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
         else if(gear.toUpperCase().equals("HIGH")) 
           gearShifter.set(true);
         DPPShifter(gear);  
+        /*If statement that turns the gear shifter solenoid on and if the gear is high or low */
       }  
 
       public void DPPShifter(String gear) {
@@ -161,6 +149,11 @@ public class DriveSubsystem extends SubsystemBase {
 
       public void resetGyroAngle() {
         Gyro.reset(); 
+        /* resets the gyro */
+     }
+
+     public static double getGyroAxis(){
+      return Gyro.getAngle();
      }
 
 }

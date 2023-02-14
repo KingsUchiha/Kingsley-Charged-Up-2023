@@ -62,7 +62,8 @@ public final class Constants {
     //Arm Constants
     public static final int ARM_MOTOR_1 = 1;
     public static final int ARM_MOTOR_2 = 2;
-    public static final int ARM_SOLENOID = 3;
+    public static final int ARM_SOLENOID_1 = 3;
+    public static final int ARM_SOLENOID_2 = 4;
     public static final double ARM_MOTOR_SPEEDS = 1;
 
 
@@ -109,5 +110,9 @@ public final class Constants {
     public static final int DRIVE_ENC_RIGHT_A = 1;
     public static final int DRIVE_ENC_LEFT_B = 4;
     public static final int DRIVE_ENC_RIGHT_B = 2;
+  }
+
+  public final class AutoConstants{
+    public static final double ANGLE_THRESHOLD = 6;
   }
 }
