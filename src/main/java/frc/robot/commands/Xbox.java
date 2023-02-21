@@ -86,7 +86,7 @@ public class Xbox extends CommandBase {
             }
         }
     
-        Drivebase.drive(left,right);
+        DriveSubsystem.drive(left,right);
     }
     
   
@@ -94,7 +94,7 @@ public class Xbox extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Drivebase.drive(0,0);
+    DriveSubsystem.drive(0,0);
   }
 
   // Returns true when the command should end.
