@@ -111,14 +111,17 @@ public class DriveSubsystem extends SubsystemBase {
         left_encoders[x].setPosition(0);
         right_encoders[x].setPosition(0);
     };
+    
     /*Loop that resets all the encoders */
   }
+  public double getPosition(){ return left_encoders[0].getPosition(); }
   public void Getaxis(){
     System.out.println("X axis:" + Gyro.getRoll());
     System.out.println("Y axis:" + Gyro.getPitch());
     System.out.println("Z axis:" + Gyro.getYaw());
     /*This makes the gyro get the x,y, and z axis */
     }
+    public double getGyroYaw(){ return Gyro.getYaw(); }
 
     public void shift(String gear) {
         if(gear.toUpperCase().equals("LOW")) 
@@ -155,5 +158,23 @@ public class DriveSubsystem extends SubsystemBase {
      public static double getGyroAxis(){
       return Gyro.getAngle();
      }
+     public void autoDrive(double left, double right, double angle) {
+     
+      if (left > 0 && right > 0){ //driving forwards
+        drive(
+          angle > 0 ? left : left * Constants.AutoConstants.AUTO_SPEED_ADJUSTMENT * 1.08,
+          angle < 0 ? right : right * Constants.AutoConstants.AUTO_SPEED_ADJUSTMENT * 1.08
+        );
+      }
+      else if (left < 0 && right < 0){ //driving backwards
+        drive(
+          angle < 0 ? left : left * Constants.AutoConstants.AUTO_SPEED_ADJUSTMENT * 1.08,
+          angle > 0 ? right : right * Constants.AutoConstants.AUTO_SPEED_ADJUSTMENT * 1.08
+        );
+      }
+      else{ //When leftDrive1 and rightDrive1 are zero
+        drive(0,0);      
+      }
+    }
 
 }
