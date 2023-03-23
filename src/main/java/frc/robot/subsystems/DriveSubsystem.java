@@ -6,18 +6,17 @@ package frc.robot.subsystems;
 
 
 
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.I2C;
-import com.revrobotics.RelativeEncoder;
 import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -34,10 +33,12 @@ public class DriveSubsystem extends SubsystemBase {
     private MotorControllerGroup right_motors;
     private static DifferentialDrive our_drive;
 
-    private Solenoid gearShifter;
+    private static Solenoid gearShifter;
 
    private RelativeEncoder left_encoders[];
    private RelativeEncoder right_encoders[];
+   private Encoder rightEncoder;
+   private Encoder leftEncoder;
 
    
 
@@ -61,8 +62,10 @@ public class DriveSubsystem extends SubsystemBase {
 //* Differentiating the control groups */
     gearShifter = new Solenoid(0, PneumaticsModuleType.CTREPCM, Constants.DriveConstants.GEAR_SHIFTER);
 //*Innitializing the solenoid and setting it to a pneumatic module type and using the gear shift constants */
-    left_encoders=new RelativeEncoder[2];
-    right_encoders=new RelativeEncoder[2];
+    left_encoders=new RelativeEncoder[0];
+    right_encoders=new RelativeEncoder[1];
+     leftEncoder=new Encoder(0, 1, false, Encoder.EncodingType.k1X);
+     rightEncoder=new Encoder(2,3, true, Encoder.EncodingType.k1X);
     /*Innitializing the encoders */
     left_encoders[0]=left_motor.getEncoder();
     left_encoders[1]=left_motor_2.getEncoder();
@@ -70,6 +73,8 @@ public class DriveSubsystem extends SubsystemBase {
     right_encoders[0]=right_motor.getEncoder();
     right_encoders[1]=right_motor_2.getEncoder();
     right_encoders[2]=right_motor_3.getEncoder();
+
+    
     /* Setting the encoder for each motor */
     left_encoders[0].setPositionConversionFactor(100/21);
     left_encoders[1].setPositionConversionFactor(100/21);
@@ -106,13 +111,26 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
+  public double getEncoderDistance(String mode){
+    if(mode.equalsIgnoreCase("RIGHT")){
+      return rightEncoder.getDistance();
+    }
+
+    else{
+      return leftEncoder.getDistance();
+    }
+
+  }
+
   public void resetEncoders(){
+        /*Loop that resets all the encoders */
     for(int x=1; x<left_encoders.length;x++){
         left_encoders[x].setPosition(0);
         right_encoders[x].setPosition(0);
     };
-    
-    /*Loop that resets all the encoders */
+    rightEncoder.reset();
+    leftEncoder.reset();
+
   }
   public double getPosition(){ return left_encoders[0].getPosition(); }
   public void Getaxis(){
@@ -121,6 +139,7 @@ public class DriveSubsystem extends SubsystemBase {
     System.out.println("Z axis:" + Gyro.getYaw());
     /*This makes the gyro get the x,y, and z axis */
     }
+
     public double getGyroYaw(){ return Gyro.getYaw(); }
 
     public void shift(String gear) {
@@ -153,6 +172,11 @@ public class DriveSubsystem extends SubsystemBase {
       public void resetGyroAngle() {
         Gyro.reset(); 
         /* resets the gyro */
+     }
+
+     public static boolean getGear(){
+
+      return gearShifter.get();
      }
 
      public static double getGyroAxis(){

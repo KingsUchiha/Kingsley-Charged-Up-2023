@@ -1,8 +1,9 @@
+package frc.robot;
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -14,6 +15,9 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Utilities.Controls;
+import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,6 +29,13 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  double turn;
+  double throttle;
+  double reverse;
+  boolean brake;
+  double rotate;
+  double left;
+  double right;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -101,7 +112,42 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+
+    turn=Controls.driver.getLeftX();
+    throttle=Controls.driver.getRightTriggerAxis();
+    reverse=Controls.driver.getLeftTriggerAxis();
+
+    if(Math.abs(turn)> Constants.ControlConstants.AXIS_THRESHOLD){
+
+      left=Constants.ControlConstants.SPIN_SENSITIVITY*turn;
+      right=Constants.ControlConstants.SPIN_SENSITIVITY*(turn*-1);
+  }
+  else if(Math.abs(turn)< Constants.ControlConstants.AXIS_THRESHOLD){
+      left=0;
+      right=0;
+  }
+  else{
+      if(turn>Constants.ControlConstants.AXIS_THRESHOLD){
+          left=(throttle-reverse);
+          right=(throttle-reverse)*(1-turn);
+      }
+      else if(turn< -1*Constants.ControlConstants.AXIS_THRESHOLD){
+          left=(throttle-reverse)*(1+turn);
+          right=(throttle-reverse);
+
+      }
+      else{
+          left=(throttle-reverse);
+          right=(throttle-reverse);
+      }
+    }
+
+    SmartDashboard.putNumber("Totally a Lidar value ", DriveSubsystem.getGyroAxis());
+    SmartDashboard.putBoolean("Gearshifter", DriveSubsystem.getGear() );
+
+
+  }
 
   @Override
   public void testInit() {
