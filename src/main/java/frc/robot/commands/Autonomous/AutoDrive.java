@@ -50,7 +50,7 @@ public class AutoDrive extends CommandBase {
         drivebase.autoDrive(-auto_drivespeed, -auto_drivespeed, angle);
     }
     else{
-        DriveSubsystem.drive(0, 0);
+        drivebase.drive(0, 0);
         done_traveling=true;
 
         
@@ -60,7 +60,7 @@ public class AutoDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveSubsystem.drive(0, 0);
+    drivebase.drive(0, 0);
   }
 
   // Returns true when the command should end.

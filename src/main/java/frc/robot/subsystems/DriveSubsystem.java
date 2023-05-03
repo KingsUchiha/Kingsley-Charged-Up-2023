@@ -14,6 +14,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -39,6 +40,7 @@ public class DriveSubsystem extends SubsystemBase {
    private RelativeEncoder right_encoders[];
    private Encoder rightEncoder;
    private Encoder leftEncoder;
+   private static AHRS navxGyro;
 
    
 
@@ -54,6 +56,8 @@ public class DriveSubsystem extends SubsystemBase {
     right_motor=new CANSparkMax(Constants.DriveConstants.DRIVE_MOTOR_RIGHT_1, MotorType.kBrushless);
     right_motor_2=new CANSparkMax(Constants.DriveConstants.DRIVE_MOTOR_RIGHT_2, MotorType.kBrushless);
     right_motor_3=new CANSparkMax(Constants.DriveConstants.DRIVE_MOTOR_RIGHT_3, MotorType.kBrushless);
+
+
 //*Innitializing the motors with the constants and brushless motor type */
     left_motors=new MotorControllerGroup(left_motor, left_motor_2, left_motor_3);
     right_motors=new MotorControllerGroup(right_motor, right_motor_2, right_motor_3);
@@ -87,6 +91,7 @@ public class DriveSubsystem extends SubsystemBase {
     right_motor_2.setInverted(true);
     right_motor_3.setInverted(true);
         /*Inverting the right motors */
+    
     };
 
     
@@ -105,7 +110,7 @@ public class DriveSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public static void drive(double left, double right){
+  public void drive(double left, double right){
     our_drive.tankDrive(left, right);
     /*Allows the robot to drive */
 
@@ -132,7 +137,9 @@ public class DriveSubsystem extends SubsystemBase {
     leftEncoder.reset();
 
   }
-  public double getPosition(){ return left_encoders[0].getPosition(); }
+  public double getPosition(){ 
+    return left_encoders[0].getPosition();
+   }
   public void Getaxis(){
     System.out.println("X axis:" + Gyro.getRoll());
     System.out.println("Y axis:" + Gyro.getPitch());
@@ -174,14 +181,21 @@ public class DriveSubsystem extends SubsystemBase {
         /* resets the gyro */
      }
 
-     public static boolean getGear(){
+     public boolean getGear(){
 
       return gearShifter.get();
      }
 
-     public static double getGyroAxis(){
-      return Gyro.getAngle();
+     public double getGyroRoll(){
+      return Gyro.getRoll();
+
+      
+
+
      }
+     public double getGyroAngle (){
+      return Gyro.getAngle();
+    }
      public void autoDrive(double left, double right, double angle) {
      
       if (left > 0 && right > 0){ //driving forwards
@@ -200,5 +214,20 @@ public class DriveSubsystem extends SubsystemBase {
         drive(0,0);      
       }
     }
+    public void autoTurn(double speed, double angle){
+      double gyroAngle=getGyroAngle();
+      if(gyroAngle>angle){
+      drive(-speed,speed);
+      }
+      else if(gyroAngle<angle){
+        drive(speed,-speed);
+      }
+      else{
+          drive(0,0);
+        }
+      
+
+    }
+
 
 }

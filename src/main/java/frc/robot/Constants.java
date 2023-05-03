@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -68,6 +69,16 @@ public final class Constants {
     public static final int ARM_SOLENOID_2 = 4;
     public static final double ARM_MOTOR_SPEEDS = 1;
 
+    //Swerve Constants
+
+    public static final double kWheelDiameterMeters=Units.inchesToMeters(4);
+    public static final double kDriveMotorGearRatio=1/5.8462;
+    public static final double kTurningMotorGearRatio=1/18.0;
+    public static final double kDriveEncoderRot2Meter=kDriveMotorGearRatio*Math.PI*kWheelDiameterMeters;
+    public static final double kTurningEncoderRot2Rad=kTurningMotorGearRatio*2*Math.PI;
+    public static final double kDriveEncoderRPM2MeterPerSec=kDriveEncoderRot2Meter/60;
+    public static final double kDriveEncoderRPM2RadPerSec=kTurningEncoderRot2Rad/60;
+    public static final double kPTurning=0.5;
 
   }
   public class ControlConstants {

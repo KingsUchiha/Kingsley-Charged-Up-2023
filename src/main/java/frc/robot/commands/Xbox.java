@@ -31,7 +31,7 @@ public class Xbox extends CommandBase {
   double left;
   double right;
   double sensitivity;
-  DriveSubsystem Drivebase;
+  DriveSubsystem drivebase;
 
  
 
@@ -40,7 +40,7 @@ public class Xbox extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     driver=new XboxController(Constants.ControlConstants.XBOX_CONTROLLER_DRIVER);
     operator=new XboxController(Constants.ControlConstants.XBOX_CONTROLLER_OPERATOR);
-    Drivebase=m_drivebase;
+    drivebase=m_drivebase;
     }
 
   // Called when the command is initially scheduled.
@@ -86,7 +86,7 @@ public class Xbox extends CommandBase {
             }
         }
     
-        DriveSubsystem.drive(left,right);
+        drivebase.drive(left,right);
     }
     
   
@@ -94,7 +94,7 @@ public class Xbox extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    DriveSubsystem.drive(0,0);
+    drivebase.drive(0,0);
   }
 
   // Returns true when the command should end.

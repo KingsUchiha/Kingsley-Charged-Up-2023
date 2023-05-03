@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  DriveSubsystem drivebase;
   double turn;
   double throttle;
   double reverse;
@@ -143,8 +144,8 @@ public class Robot extends TimedRobot {
       }
     }
 
-    SmartDashboard.putNumber("Totally a Lidar value ", DriveSubsystem.getGyroAxis());
-    SmartDashboard.putBoolean("Gearshifter", DriveSubsystem.getGear() );
+    SmartDashboard.putNumber("Totally a Lidar value ", drivebase.getGyroRoll());
+    SmartDashboard.putBoolean("Gearshifter", drivebase.getGear() );
 
 
   }
