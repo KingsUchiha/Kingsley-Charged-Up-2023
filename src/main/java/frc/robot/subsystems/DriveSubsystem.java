@@ -14,7 +14,6 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -29,6 +28,7 @@ public class DriveSubsystem extends SubsystemBase {
     private CANSparkMax right_motor;
     private CANSparkMax right_motor_2;
     private CANSparkMax right_motor_3;
+    int elnum=2;
 
     private MotorControllerGroup left_motors;
     private MotorControllerGroup right_motors;
@@ -40,7 +40,6 @@ public class DriveSubsystem extends SubsystemBase {
    private RelativeEncoder right_encoders[];
    private Encoder rightEncoder;
    private Encoder leftEncoder;
-   private static AHRS navxGyro;
 
    
 

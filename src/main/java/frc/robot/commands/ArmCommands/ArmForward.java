@@ -29,13 +29,13 @@ public class ArmForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.run("forward");
+   /*  arm.run("forward");*/
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm.run("brake");
+   /*  arm.run("brake");*/
   }
 
   // Returns true when the command should end.

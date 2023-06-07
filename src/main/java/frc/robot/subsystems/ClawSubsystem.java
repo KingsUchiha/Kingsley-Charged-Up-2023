@@ -20,8 +20,7 @@ public class ClawSubsystem extends SubsystemBase {
 
 
   public ClawSubsystem() {
-    left_Solenoid=new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SubsystemConstants.CLAW_SOLENOID_1);
-    left_Solenoid=new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SubsystemConstants.CLAW_SOLENOID_1);
+    
     toggle=true;
   }
 

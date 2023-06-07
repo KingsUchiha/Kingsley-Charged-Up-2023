@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.SubsystemConstants;
+import frc.robot.Constants.DriveConstants;
 
 
 public class ArmSubsystem extends SubsystemBase {
@@ -27,11 +28,10 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
     brake=false;
-    left_motor=new CANSparkMax(SubsystemConstants.ARM_MOTOR_1, MotorType.kBrushless );
-    right_motor=new CANSparkMax(SubsystemConstants.ARM_MOTOR_2, MotorType.kBrushless );
-    transitional_motor=new CANSparkMax(SubsystemConstants.ARM_MOTOR_1, MotorType.kBrushless);
-    Arm_Solenoid=new Solenoid(PneumaticsModuleType, Constants.SubsystemConstants.ARM_SOLENOID_1);
-    Arm_Solenoid=new Solenoid(PneumaticsModuleType, Constants.SubsystemConstants.ARM_SOLENOID_2);
+    left_motor=new CANSparkMax(DriveConstants.ARM_MOTOR_LEFT, MotorType.kBrushless );
+    right_motor=new CANSparkMax(DriveConstants.ARM_MOTOR_RIGHT, MotorType.kBrushless );
+    transitional_motor=new CANSparkMax(DriveConstants.TRANS_MOTOR, MotorType.kBrushless);
+   
   }
 
   /**
@@ -67,7 +67,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-  public void run(String mode){
+ /*  public void run(String mode){
     if(mode.equalsIgnoreCase("back")){
         left_motor.set(-SubsystemConstants.ARM_MOTOR_SPEEDS);
         right_motor.set(SubsystemConstants.ARM_MOTOR_SPEEDS);
@@ -91,12 +91,12 @@ public class ArmSubsystem extends SubsystemBase {
   public void armbrake(){
     brake=!brake;
   }
-  public void transitional(String mode){
+ /* public void transitional(String mode){
     if(mode.equalsIgnoreCase("forward")){
-    transitional_motor.set(SubsystemConstants.ARM_MOTOR_SPEEDS);
+    transitional_motor.set(DriveConstants.ARM_MOTOR_SPEEDS);
     }
     else if(mode.equalsIgnoreCase("back")){
       transitional_motor.set(-SubsystemConstants.ARM_MOTOR_SPEEDS);
   }
-}
+}*/
 }

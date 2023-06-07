@@ -11,9 +11,9 @@ import frc.robot.subsystems.DriveSubsystem;
 public class AutoTurn extends CommandBase {
 
     private DriveSubsystem drivebase;
-	private double desiredAngle, autoDrivespeed, turnStartTime,turnCurrentTime;
+	private double desiredAngle, autoDrivespeed;
 	private boolean doneTraveling;
-    private int count;
+    public int count;
 
   public AutoTurn(double AngleInput, double speedInput, DriveSubsystem passedDrivebase) {
     drivebase=passedDrivebase;
